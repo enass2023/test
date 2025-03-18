@@ -22,6 +22,11 @@ trait GeneralTrait
         return $this->apiResponse(null,0,$message, 401);
     }
 
+    public function Forbidden($message)
+    {
+        return $this->apiResponse(null,0,$message, 403);
+    }
+
     public function notFoundResponse($more)
     {
         return $this->apiResponse(null, 0, $more, 404);
@@ -30,7 +35,7 @@ trait GeneralTrait
     public function requiredField($message)
     {
         // return $this->apiResponse(null, false, $message, 200);
-        return $this->apiResponse(null, false, $message, 400);
+        return $this->apiResponse(null, false, $message, 422);
     }
  
 

@@ -18,42 +18,43 @@ class AuthController extends Controller
     use GeneralTrait;
 
 
- public function register(Request $request)
+    public function register(Request $request)
    
- {
+    {
+   
+     $validate = Validator::make($request->all(),[
+       'name' => 'required|string',
+       'email' => 'required|email|string|unique:users,email',
+       'password' => 'required|string'
+       ]);
+       if($validate->fails()){
+        return $this->requiredField($validate->errors());    
+        }
+       
+      try{
+       $data=$request->all();
+               
+       $user=User::create($data);
+       $token = $user->createToken('apiToken')->accessToken;
 
-  $validate = Validator::make($request->all(),[
-    'name' => 'required|string',
-    'email' => 'required|string|unique:users,email',
-    'password' => 'required|string'
-    ]);
-    if($validate->fails()){
-    return $this->requiredField($validate->errors()->first());    
+       return response()->json([
+        'message' => 'User created successfully',
+        '$res' => [
+          'user' =>UserResource::make($user),
+          'token' => $token
+       ],
+       ], 201);
+    
+       
+   
     }
-   try{
-  
-  $user = User::create([
-     'uuid'=>Str::uuid(),
-      'name' => $request->name,
-      'email' => $request->email,
-      'password' => Hash::make($request->password)
-    ]);
-
-    $token = $user->createToken('apiToken')->accessToken;
-
-  $res = [
-      'user' =>UserResource::make($user),
-      'token' => $token
-  ];
-  return $this->apiResponse($res);
-
- }
-catch(\Exception $ex){
-        return $this->apiResponse($data,false,$ex->getMessage(),500);
-
-       }
-
-}
+    catch(\Exception $ex){
+           return $this->apiResponse($data,false,$ex->getMessage(),500);
+   
+          }
+   
+   }
+   
 
 
   
@@ -61,7 +62,7 @@ catch(\Exception $ex){
     
      {
       $validate = Validator::make($request->all(),[
-        'email' => 'required|string',
+        'email' => 'required|email|string',
         'password' => 'required|string'
         ]);
         if($validate->fails()){
@@ -82,7 +83,15 @@ catch(\Exception $ex){
         'user' =>UserResource::make($user),
         'token' => $token
          ];
-      return $this->apiResponse($res);
+         
+         return response()->json([
+        'message' => 'User created successfully',
+        '$res' => [
+          'user' =>UserResource::make($user),
+          'token' => $token
+       ],
+       ], 200);
+
         }
       catch(\Exception $ex){
         return $this->apiResponse($user,false,$ex->getMessage(),500);
