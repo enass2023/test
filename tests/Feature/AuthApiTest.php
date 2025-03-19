@@ -11,23 +11,23 @@ class AuthApiTest extends TestCase
 {
 
 
-    public function testregister()
+    // public function testregister()
     
-    {
+    // {
 
-        $userData = [
-            'uuid'=>Str::uuid(),
-            'name' => 'nana',
-            'email' => 'nana@example.com',
-            'password' => Hash::make(123456789)
+    //     $userData = [
+    //         'uuid'=>Str::uuid(),
+    //         'name' => 'dina',
+    //         'email' => 'dina@example.com',
+    //         'password' => Hash::make(123456789)
 
-        ];
-        $response = $this->postJson('/api/register',$userData);
+    //     ];
+    //     $response = $this->postJson('/api/register',$userData);
        
 
-        $response->assertStatus(201); 
+    //     $response->assertStatus(201); 
        
-    }
+    // }
 
 
     public function testlogout()

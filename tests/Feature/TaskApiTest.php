@@ -169,15 +169,10 @@ class TaskApiTest extends TestCase
            $response->assertStatus(200);
        
            $token = $response->json('$res')['token'];
-          
-           $userId = User::where('email', $userData['email'])->first()->id;
-
-    
-        $taskResponse = $this->withHeaders([
+        
+         $taskResponse = $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/tasks',[
-            'uuid'=>Str::uuid(),
-            'user_id'=>$userId ,
+          ])->postJson('/api/tasks',[
             'title' => 'New Task',
             'description' => 'This is a test task',
             'status' => 'pending',]) ;
@@ -228,15 +223,10 @@ class TaskApiTest extends TestCase
          $response->assertStatus(200);
      
          $token = $response->json('$res')['token'];
-        
-         $userId = User::where('email', $userData['email'])->first()->id;
-
   
       $taskResponse = $this->withHeaders([
           'Authorization' => 'Bearer ' . $token,
       ])->postJson('/api/tasks',[
-          'uuid'=>Str::uuid(),
-          'user_id'=>$userId ,
           'title' => '',
           'description' => '',
           'status' => 'pendiassa',]) ;
@@ -276,8 +266,6 @@ class TaskApiTest extends TestCase
        
         $task = Task::factory()->create(['user_id'=>$userId ]);
             
-       
-
         $token = $response->json('$res')['token'];
          $taskResponse = $this->withHeaders([
            'Authorization' => 'Bearer ' . $token,

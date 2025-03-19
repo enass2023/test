@@ -118,20 +118,20 @@ class TaskController extends Controller
             if($validate->fails()){
             return $this->requiredField($validate->errors()->first());    
             }
-            try{
+           
             $data=$request->all();
+            $data['uuid']=Str::uuid();
+            $data['user_id']=Auth::id();
             
             $task=Task::create($data);
 
             $task=TaskResource::make($task);
             return $this->apiResponse($task,true,null,201);
            
-             } catch(\Exception $ex){
-                return $this->apiResponse($task,false,$ex->getMessage(),500);
-            
-               }
+             } 
+             
 
-     }
+   
 
    
     
